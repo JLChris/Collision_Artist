@@ -4,14 +4,42 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bouncy shapes</title>
+    <title>Collision Artist</title>
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <div class="container">
+    <div class="canvas-container">
       <canvas id="canvas1"></canvas>
       <canvas id="canvas2"></canvas>
     </div>
+    <div class="settings-container">
+      <div class="squares-settings">
+        <label for="square-size"
+          >Size: <span id="square-size-display">100</span></label
+        >
+        <input
+          type="range"
+          id="square-size"
+          value="100"
+          name="square-size"
+          min="10"
+          max="300"
+        />
+        <label for="square-speed"
+          >Speed Multiplier: <span id="square-speed-display">1</span></label
+        >
+        <input
+          type="range"
+          id="square-speed"
+          name="square-speed"
+          value="1"
+          min="1"
+          max="5"
+        />
+      </div>
+      <div class="paint-settings"></div>
+    </div>
+
     <script src="./script.js"></script>
   </body>
 </html>

@@ -3,6 +3,11 @@ const canvas2 = document.getElementById("canvas2");
 const ctx1 = canvas1.getContext("2d");
 const ctx2 = canvas2.getContext("2d");
 
+const squareSizeSelect = document.getElementById("square-size");
+const squareSizeDisplay = document.getElementById("square-size-display");
+const squareSpeedSelect = document.getElementById("square-speed");
+const squareSpeedDisplay = document.getElementById("square-speed-display");
+
 const CANVAS_WIDTH = (canvas1.width = canvas2.width = 400);
 const CANVAS_HEIGHT = (canvas1.height = canvas2.height = 800);
 
@@ -87,6 +92,20 @@ const square1 = new Square(1, false, 1);
 const square2 = new Square(1.5, false, 1);
 const brush = new Brush();
 
+squareSizeSelect.addEventListener("change", function (e) {
+  square1.width = Number(e.target.value);
+  square1.height = Number(e.target.value);
+  square2.width = Number(e.target.value);
+  square2.height = Number(e.target.value);
+  console.log(square1.width, square1.height);
+  squareSizeDisplay.innerHTML = e.target.value;
+});
+squareSpeedSelect.addEventListener("change", function (e) {
+  square1.speed = 1 * Number(e.target.value);
+  square2.speed = 1.5 * Number(e.target.value);
+  squareSpeedDisplay.innerHTML = e.target.value;
+});
+
 function animate() {
   ctx1.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   square1.update();
@@ -104,7 +123,7 @@ function animate() {
   } else {
     brush.color = `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(
       Math.random() * 255
-    )}, ${Math.floor(Math.random() * 255)}, ${Math.random()})`;
+    )}, ${Math.floor(Math.random() * 255)}, ${Math.random() * 0.5 + 0.5})`;
     brush.shape = shapes[gameFrame % 2];
     brush.x = Math.random() * CANVAS_WIDTH;
     brush.y = Math.random() * CANVAS_HEIGHT;
