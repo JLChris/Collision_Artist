@@ -6,6 +6,9 @@ const canvas2 = document.getElementById("canvas2");
 const ctx1 = canvas1.getContext("2d");
 const ctx2 = canvas2.getContext("2d");
 
+const CANVAS_WIDTH = (canvas1.width = canvas2.width = 500);
+const CANVAS_HEIGHT = (canvas1.height = canvas2.height = 700);
+
 /**
  * Get settings controls from DOM
  */
@@ -13,15 +16,27 @@ const squareSizeSelect = document.getElementById("square-size");
 const squareSizeDisplay = document.getElementById("square-size-display");
 const squareSpeedSelect = document.getElementById("square-speed");
 const squareSpeedDisplay = document.getElementById("square-speed-display");
+
+const brushRandomizeCheckbox = document.getElementById("randomize");
+const brushShapeSelect = document.getElementById("brush-shape");
+const brushSizeSelect = document.getElementById("brush-size");
+const brushSizeDisplay = document.getElementById("brush-size-display");
+const brushSpeedSelect = document.getElementById("brush-speed");
+const brushSpeedDisplay = document.getElementById("brush-speed-display");
+const brushWiggleSelect = document.getElementById("brush-wiggle");
+const brushWiggleDisplay = document.getElementById("brush-wiggle-display");
+
 const playButton = document.getElementById("play-button");
 const clearButton = document.getElementById("clear-button");
-
-const CANVAS_WIDTH = (canvas1.width = canvas2.width = 500);
-const CANVAS_HEIGHT = (canvas1.height = canvas2.height = 800);
 
 const numSquares = 20;
 let gameFrame = 0;
 let runAnimation = true;
+let randomizeBrush = true;
+let manualBrushShape = "all";
+let manualBrushSize = 100;
+let manualBrushSpeed = 1;
+let manualBrushWiggle = 1;
 
 class Square {
   constructor(speed, fill, canvas) {
@@ -118,6 +133,30 @@ squareSpeedSelect.addEventListener("change", function (e) {
   squareSpeedDisplay.innerHTML = e.target.value;
 });
 
+brushRandomizeCheckbox.addEventListener("change", function (e) {
+  randomizeBrush = e.target.checked;
+  console.log(randomizeBrush);
+});
+
+brushShapeSelect.addEventListener("change", function (e) {
+  manualBrushShape = e.target.value;
+});
+
+brushSpeedSelect.addEventListener("change", function (e) {
+  manualBrushSpeed = Number(e.target.value);
+  brushSpeedDisplay.innerHTML = e.target.value;
+});
+
+brushSizeSelect.addEventListener("change", function (e) {
+  manualBrushSize = Number(e.target.value);
+  brushSizeDisplay.innerHTML = e.target.value;
+});
+
+brushWiggleSelect.addEventListener("change", function (e) {
+  manualBrushWiggle = Number(e.target.value);
+  brushWiggleDisplay.innerHTML = e.target.value;
+});
+
 playButton.addEventListener("click", function (e) {
   if (runAnimation) {
     runAnimation = false;
@@ -134,6 +173,17 @@ clearButton.addEventListener("click", function (e) {
 });
 
 function animate() {
+  if (randomizeBrush) {
+    brushShapeSelect.disabled = true;
+    brushSizeSelect.disabled = true;
+    brushSpeedSelect.disabled = true;
+    brushWiggleSelect.disabled = true;
+  } else {
+    brushShapeSelect.disabled = false;
+    brushSizeSelect.disabled = false;
+    brushSpeedSelect.disabled = false;
+    brushWiggleSelect.disabled = false;
+  }
   ctx1.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   square1.update();
   square1.draw();
@@ -148,17 +198,19 @@ function animate() {
     brush.update();
     brush.draw();
   } else {
-    brush.color = `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(
-      Math.random() * 255
-    )}, ${Math.floor(Math.random() * 255)}, ${Math.random() * 0.8 + 0.2})`;
-    brush.shape = shapes[gameFrame % 2];
-    brush.x = Math.random() * CANVAS_WIDTH;
-    brush.y = Math.random() * CANVAS_HEIGHT;
-    brush.width = Math.random() * 50 + 10;
-    brush.height = Math.random() * 50 + 10;
-    brush.speed = Math.random() * 5 + 1;
-    brush.angle = Math.random() * 5 + 0.1;
-    brush.wiggle = Math.random() * 10;
+    if (randomizeBrush) {
+      brush.color = `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(
+        Math.random() * 255
+      )}, ${Math.floor(Math.random() * 255)}, ${Math.random() * 0.8 + 0.2})`;
+      brush.shape = shapes[gameFrame % 2];
+      brush.x = Math.random() * CANVAS_WIDTH;
+      brush.y = Math.random() * CANVAS_HEIGHT;
+      brush.width = Math.random() * 50 + 10;
+      brush.height = Math.random() * 50 + 10;
+      brush.speed = Math.random() * 5 + 1;
+      brush.angle = Math.random() * 5 + 0.1;
+      brush.wiggle = Math.random() * 10;
+    }
   }
   gameFrame++;
   if (runAnimation) {
