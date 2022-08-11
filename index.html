@@ -9,35 +9,106 @@
   </head>
   <body>
     <div class="canvas-container">
-      <canvas id="canvas1"></canvas>
-      <canvas id="canvas2"></canvas>
-    </div>
-    <div class="settings-container">
-      <div class="squares-settings">
-        <label for="square-size"
-          >Size: <span id="square-size-display">100</span></label
-        >
-        <input
-          type="range"
-          id="square-size"
-          value="100"
-          name="square-size"
-          min="10"
-          max="300"
-        />
-        <label for="square-speed"
-          >Speed Multiplier: <span id="square-speed-display">1</span></label
-        >
-        <input
-          type="range"
-          id="square-speed"
-          name="square-speed"
-          value="1"
-          min="1"
-          max="5"
-        />
+      <div class="squares-container">
+        <canvas id="canvas1"></canvas>
+        <div class="squares-settings">
+          <fieldset>
+            <legend>Edit your faithful artists:</legend>
+            <div class="size-setting">
+              <label for="square-size"
+                >Size: <span id="square-size-display">100</span></label
+              >
+              <input
+                type="range"
+                id="square-size"
+                value="100"
+                name="square-size"
+                min="10"
+                max="300"
+              />
+            </div>
+            <div class="speed-setting">
+              <label for="square-speed"
+                >Speed Multiplier:
+                <span id="square-speed-display">1</span></label
+              >
+              <input
+                type="range"
+                id="square-speed"
+                name="square-speed"
+                value="1"
+                min="1"
+                max="10"
+              />
+            </div>
+          </fieldset>
+        </div>
       </div>
-      <div class="paint-settings"></div>
+
+      <div class="button-container">
+        <button type="button" id="play-button">Running</button>
+        <button type="button" id="clear-button">Clear Canvas</button>
+      </div>
+
+      <div class="paint-container">
+        <canvas id="canvas2"></canvas>
+        <div class="paint-settings">
+          <fieldset>
+            <legend>Edit brush style:</legend>
+            <div class="brush-randomize-setting">
+              <label for="randomize">Randomize:</label>
+              <input type="checkbox" name="randomize" id="randomize" checked />
+            </div>
+            <div class="brush-shape-setting">
+              <label for="brush-shape">Shape:</label>
+              <select id="brush-shape" name="brush-shape">
+                <option value="all">Surprise me!</option>
+                <option value="rect">Rectangle</option>
+                <option value="circle">Ellipse</option>
+              </select>
+            </div>
+            <div class="brush-size-setting">
+              <label for="brush-size"
+                >Size: <span class="brush-size-display">100</span></label
+              >
+              <input
+                type="range"
+                id="brush-size"
+                name="brush-size"
+                min="1"
+                max="100"
+                value="100"
+              />
+            </div>
+            <div class="brush-speed-setting">
+              <label for="brush-speed"
+                >Speed: <span class="brush-speed-display">1</span></label
+              >
+              <input
+                type="range"
+                id="brush-speed"
+                name="brush-speed"
+                min="1"
+                max="20"
+                value="1"
+              />
+            </div>
+            <div class="brush-wiggle-setting">
+              <label for="brush-wiggle"
+                >Wiggle: <span class="brush-wiggle-display">1</span></label
+              >
+              <input
+                type="range"
+                id="brush-wiggle"
+                name="brush-wiggle"
+                min="0"
+                max="10"
+                value="0"
+              />
+            </div>
+          </fieldset>
+        </div>
+      </div>
     </div>
 
     <script src="./script.js"></script>

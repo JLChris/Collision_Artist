@@ -1,18 +1,27 @@
+/**
+ * Declare canvas variables
+ */
 const canvas1 = document.getElementById("canvas1");
 const canvas2 = document.getElementById("canvas2");
 const ctx1 = canvas1.getContext("2d");
 const ctx2 = canvas2.getContext("2d");
 
+/**
+ * Get settings controls from DOM
+ */
 const squareSizeSelect = document.getElementById("square-size");
 const squareSizeDisplay = document.getElementById("square-size-display");
 const squareSpeedSelect = document.getElementById("square-speed");
 const squareSpeedDisplay = document.getElementById("square-speed-display");
+const playButton = document.getElementById("play-button");
+const clearButton = document.getElementById("clear-button");
 
-const CANVAS_WIDTH = (canvas1.width = canvas2.width = 400);
+const CANVAS_WIDTH = (canvas1.width = canvas2.width = 500);
 const CANVAS_HEIGHT = (canvas1.height = canvas2.height = 800);
 
 const numSquares = 20;
 let gameFrame = 0;
+let runAnimation = true;
 
 class Square {
   constructor(speed, fill, canvas) {
@@ -53,15 +62,17 @@ class Brush {
     this.speed = 1;
     this.color = "black";
     this.angle = Math.random() * 5 + 0.1;
-    this.texture = 2;
+    this.wiggle = 0;
   }
   update() {
     this.x = this.goRight
-      ? this.x + this.speed * (1 + Math.random() * this.texture)
-      : this.x - this.speed * (1 + Math.random() * this.texture);
+      ? this.x + this.wiggle * (Math.random() * 2 - 1) + this.speed
+      : this.x + this.wiggle * (Math.random() * 2 - 1) - this.speed;
     this.y = this.goDown
-      ? this.y + this.speed * this.angle * (1 + Math.random() * this.texture)
-      : this.y - this.speed * this.angle * (1 + Math.random() * this.texture);
+      ? this.y + this.wiggle * (Math.random() * 2 - 1) + this.speed * this.angle
+      : this.y +
+        this.wiggle * (Math.random() * 2 - 1) -
+        this.speed * this.angle;
     if (this.x + this.width >= CANVAS_WIDTH) this.goRight = false;
     if (this.x <= 0) this.goRight = true;
     if (this.y + this.height >= CANVAS_HEIGHT) this.goDown = false;
@@ -100,10 +111,26 @@ squareSizeSelect.addEventListener("change", function (e) {
   console.log(square1.width, square1.height);
   squareSizeDisplay.innerHTML = e.target.value;
 });
+
 squareSpeedSelect.addEventListener("change", function (e) {
   square1.speed = 1 * Number(e.target.value);
   square2.speed = 1.5 * Number(e.target.value);
   squareSpeedDisplay.innerHTML = e.target.value;
+});
+
+playButton.addEventListener("click", function (e) {
+  if (runAnimation) {
+    runAnimation = false;
+    playButton.innerHTML = "Paused";
+  } else {
+    runAnimation = true;
+    playButton.innerHTML = "Running";
+    animate();
+  }
+});
+
+clearButton.addEventListener("click", function (e) {
+  ctx2.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 });
 
 function animate() {
@@ -121,9 +148,9 @@ function animate() {
     brush.update();
     brush.draw();
   } else {
-    brush.color = `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(
+    brush.color = `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(
       Math.random() * 255
-    )}, ${Math.floor(Math.random() * 255)}, ${Math.random() * 0.5 + 0.5})`;
+    )}, ${Math.floor(Math.random() * 255)}, ${Math.random() * 0.8 + 0.2})`;
     brush.shape = shapes[gameFrame % 2];
     brush.x = Math.random() * CANVAS_WIDTH;
     brush.y = Math.random() * CANVAS_HEIGHT;
@@ -131,10 +158,11 @@ function animate() {
     brush.height = Math.random() * 50 + 10;
     brush.speed = Math.random() * 5 + 1;
     brush.angle = Math.random() * 5 + 0.1;
-    brush.texture = Math.random() * 2;
+    brush.wiggle = Math.random() * 10;
   }
   gameFrame++;
-  requestAnimationFrame(animate);
+  if (runAnimation) {
+    requestAnimationFrame(animate);
+  }
 }
-
 animate();
