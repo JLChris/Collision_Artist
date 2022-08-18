@@ -205,11 +205,24 @@ function animate() {
       brush.shape = shapes[gameFrame % 2];
       brush.x = Math.random() * CANVAS_WIDTH;
       brush.y = Math.random() * CANVAS_HEIGHT;
-      brush.width = Math.random() * 50 + 10;
-      brush.height = Math.random() * 50 + 10;
-      brush.speed = Math.random() * 5 + 1;
+      brush.width = Math.random() * 100 + 10;
+      brush.height = Math.random() * 100 + 10;
+      brush.speed = Math.random() * 20 + 1;
       brush.angle = Math.random() * 5 + 0.1;
-      brush.wiggle = Math.random() * 10;
+      brush.wiggle = Math.random() * 100;
+    } else {
+      brush.color = `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(
+        Math.random() * 255
+      )}, ${Math.floor(Math.random() * 255)}, ${Math.random() * 0.8 + 0.2})`;
+      brush.shape =
+        manualBrushShape === "all" ? shapes[gameFrame % 2] : manualBrushShape;
+      brush.x = Math.random() * CANVAS_WIDTH;
+      brush.y = Math.random() * CANVAS_HEIGHT;
+      brush.width = Math.random() * manualBrushSize + 10;
+      brush.height = Math.random() * manualBrushSize + 10;
+      brush.speed = Math.random() * manualBrushSpeed + 1;
+      brush.angle = Math.random() * 5 + 0.1;
+      brush.wiggle = Math.random() * manualBrushWiggle;
     }
   }
   gameFrame++;
